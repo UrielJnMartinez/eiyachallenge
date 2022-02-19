@@ -21,6 +21,10 @@ cd eiyachallenge/
 
 ### Ejecucion del proyecto 🔧
 
+
+    Copiar el formato de example.env y darle valor a las variables de entorno, renombrando el archivo a .env
+
+
 _En el directorio del proyecto eiyachallange/ correr el siguiente comando para construir la imagen del proyecto._
 
 ```
