@@ -14,7 +14,7 @@ from ..serializer import CitySerializer, DistanceBethwenCitiesSerializer
 #index
 def fleet_admin_home(request):
     context = {}
-    return render(request, 'fleet_admin_home.html', context)
+    return render(request, 'fleet_admin/fleet_admin_home.html', context)
 
 class CitiesListAPIView(APIView):
     """

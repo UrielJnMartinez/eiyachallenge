@@ -5,31 +5,6 @@ from rest_framework import serializers
 from .models import City,Vehicle,DistanceBethwenCities
 
 
-class CitySerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField()
-
-    class Meta:
-        model = City
-        fields = ['id','name']
-        depth = 1
-
-    def create(self, validated_data):
-        """
-        Create and return a new `City` instance, given the validated data.
-        """
-        return City.objects.create(**validated_data)
-
-    def update(self,instance,validated_data):
-        """
-        
-        Update and return an existing `City` instance, given the validated data.
-        """
-        instance.name = validated_data.get('name', instance.name)
-        
-        instance.save()
-        return instance
-
 class VehicleSerializer(serializers.ModelSerializer):
     fuel_usage_km = serializers.CharField()
     spent_fuel = serializers.CharField()
@@ -40,7 +15,7 @@ class VehicleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vehicle
         fields = ['fuel_usage_km','spent_fuel','distance_covered','current_location']
-
+        depth = 1
 
     def create(self, validated_data):
         """
@@ -59,6 +34,32 @@ class VehicleSerializer(serializers.ModelSerializer):
         
         instance.save()
         return instance
+
+class CitySerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField()
+    vehicle = VehicleSerializer(source='current_location',many=True)
+    class Meta:
+        model = City
+        fields = ['id','name','vehicle']
+
+    def create(self, validated_data):
+        """
+        Create and return a new `City` instance, given the validated data.
+        """
+        return City.objects.create(**validated_data)
+
+    def update(self,instance,validated_data):
+        """
+        
+        Update and return an existing `City` instance, given the validated data.
+        """
+        instance.name = validated_data.get('name', instance.name)
+        
+        instance.save()
+        return instance
+
+
 
 class DistanceBethwenCitiesSerializer(serializers.ModelSerializer):
     city_origin = serializers.PrimaryKeyRelatedField(

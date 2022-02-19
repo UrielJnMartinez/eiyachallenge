@@ -26,7 +26,7 @@ class Vehicle(models.Model):
         db_table ='vehicle'
 
     def __str__(self):
-        return self.current_location
+        return self.distance_covered
 
     def change_city(self,city):
         city_distance =  DistanceBethwenCities.objects.prefetch_related(
