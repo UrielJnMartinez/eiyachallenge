@@ -8,7 +8,9 @@ class City(models.Model):
     
     class Meta:
         db_table ='city'
-
+    
+    def __str__(self):
+        return self.name
 
 class Vehicle(models.Model):
     fuel_usage_km = models.CharField(verbose_name='consumo de combustible', max_length=50)
@@ -22,6 +24,21 @@ class Vehicle(models.Model):
     
     class Meta:
         db_table ='vehicle'
+
+    def __str__(self):
+        return self.current_location
+
+    def change_city(self,city):
+        city_distance =  DistanceBethwenCities.objects.prefetch_related(
+            'city_arrival').filter(city_arrival=city,city_origin=self.current_location.id)
+        
+        if city_distance:
+            self.distance_covered =+ city_distance.distance
+            self.spent_fuel = city_distance.distance * self.fuel_usage_km
+
+            return True
+        else:
+            return False
 
 
 class DistanceBethwenCities(models.Model):
@@ -39,3 +56,6 @@ class DistanceBethwenCities(models.Model):
 
     class Meta:
         db_table ='dictance_city'
+
+    def __str__(self):
+        return self.distance
