@@ -4,6 +4,11 @@ export default{
             type: Array,
             required:true,
             default:'No hay vehiculos en esta ciudad'
+        },
+        cities_list : {
+            type: Array,
+            required:true,
+            default:'No hay mas ciudades'
         }
     },
     methods :{
@@ -29,11 +34,14 @@ export default{
                 <td>{{item.distance_covered}}</td>
                 <td>{{item.fuel_usage_km}}</td>
                 <td>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                <select class="form-select" aria-label="seleccionar ciudad">
+                    <option 
+                        v-for="(city,idx) in cities_list"
+                        v-bind:value=city.id
+                        :selected="option == item.current_location.name">
+                        {{city.name}}
+                    </option>
+                    
                 </select>
                 </td>
 

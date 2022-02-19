@@ -1,5 +1,5 @@
+
 import VehiclesList from "./VehiclesList.js"
-const url = 'http://0.0.0.0:8000/fleet_admin/'
 export default {
 
     props : {
@@ -28,7 +28,8 @@ export default {
                 </div>
                 <div class="card-body">
                     
-                    <vehicles-list :items_list="item.vehicle"></vehicles-list>
+                    <vehicles-list :items_list="item.vehicle" :cities_list="items_list"></vehicles-list>
+                    
                     <button type="button" class="w-100 btn btn-lg btn-outline-primary">Agregar un vehiculo</button>
                 </div>
             </div>
