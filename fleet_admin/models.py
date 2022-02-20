@@ -25,13 +25,13 @@ class Vehicle(models.Model):
     class Meta:
         db_table ='vehicle'
 
-    def __str__(self):
-        return self.distance_covered
+    # def __str__(self):
+    #     return self.distance_covered
 
     def change_city(self,city):
         city_distance =  DistanceBethwenCities.objects.prefetch_related(
             'city_arrival').filter(city_arrival=city,city_origin=self.current_location.id)
-        
+        print('model function')
         if city_distance:
             self.distance_covered =+ city_distance.distance
             self.spent_fuel = city_distance.distance * self.fuel_usage_km

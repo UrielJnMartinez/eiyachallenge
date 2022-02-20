@@ -46,6 +46,7 @@ class VehicleDetailAPIView(APIView):
         vehicle = self.get_object(pk)
         serializer = VehicleSerializer(vehicle, data=request.data)
         if serializer.is_valid():
+            vehicle.change_city(request.data)
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

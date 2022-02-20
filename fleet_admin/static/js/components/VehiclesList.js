@@ -1,3 +1,5 @@
+const url = 'http://0.0.0.0:8000/fleet_admin/'
+
 export default{
     props : {
         items_list : {
@@ -12,8 +14,26 @@ export default{
         }
     },
     methods :{
-        changeCity(city_id,event) {
-            console.log(city_id)
+        changeCity: function(event,city_origin,vehicle_id) {
+            axios.defaults.xsrfCookieName = 'csrftoken'
+            axios.defaults.xsrfHeaderName = "X-CSRFTOKEN"
+
+            axios({
+                method:  'put',
+                url:`${url}vehicles/detail/${vehicle_id}/`,
+                data: {
+                    id:vehicle_id,
+                    current_location:event,
+                }
+            })
+
+            .then((respose) => {
+                if (respose.data.status==200){
+                    console.log('succes')
+                }
+            }).catch((err) => {
+                console.log(err)
+            });
         },
         
     },
@@ -34,7 +54,8 @@ export default{
                 <td>{{item.distance_covered}}</td>
                 <td>{{item.fuel_usage_km}}</td>
                 <td>
-                <select class="form-select" aria-label="seleccionar ciudad">
+                <select class="form-select" aria-label="seleccionar ciudad" 
+                    @change="changeCity($event.target.value,item.current_location.id,item.id)">
                     <option 
                         v-for="(city,idx) in cities_list"
                         v-bind:value=city.id
